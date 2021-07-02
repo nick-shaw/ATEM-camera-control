@@ -1,0 +1,330 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		01268DCC2641590500DC8CB4 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 01268DCB2641590500DC8CB4 /* AppDelegate.mm */; };
+		01268DCE2641590500DC8CB4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01268DCD2641590500DC8CB4 /* Assets.xcassets */; };
+		01268DD12641590500DC8CB4 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01268DCF2641590500DC8CB4 /* MainMenu.xib */; };
+		01268DD42641590500DC8CB4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 01268DD32641590500DC8CB4 /* main.m */; };
+		01268DE0264159CD00DC8CB4 /* BMDSwitcherAPIDispatch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01268DDF264159CD00DC8CB4 /* BMDSwitcherAPIDispatch.cpp */; };
+		01287B6926458E7D00C711A4 /* ATEMicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 01287B6826458E7D00C711A4 /* ATEMicon.png */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		01268DC72641590500DC8CB4 /* ATEM Camera Control.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ATEM Camera Control.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		01268DCA2641590500DC8CB4 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		01268DCB2641590500DC8CB4 /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
+		01268DCD2641590500DC8CB4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		01268DD02641590500DC8CB4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		01268DD22641590500DC8CB4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		01268DD32641590500DC8CB4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		01268DD52641590500DC8CB4 /* ATEM_Camera_Control.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ATEM_Camera_Control.entitlements; sourceTree = "<group>"; };
+		01268DDE264159CD00DC8CB4 /* BMDSwitcherAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMDSwitcherAPI.h; sourceTree = "<group>"; };
+		01268DDF264159CD00DC8CB4 /* BMDSwitcherAPIDispatch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BMDSwitcherAPIDispatch.cpp; sourceTree = "<group>"; };
+		01287B6826458E7D00C711A4 /* ATEMicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ATEMicon.png; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		01268DC42641590500DC8CB4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		01268DBE2641590500DC8CB4 = {
+			isa = PBXGroup;
+			children = (
+				01268DC92641590500DC8CB4 /* ATEM Camera Control */,
+				01268DC82641590500DC8CB4 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		01268DC82641590500DC8CB4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				01268DC72641590500DC8CB4 /* ATEM Camera Control.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		01268DC92641590500DC8CB4 /* ATEM Camera Control */ = {
+			isa = PBXGroup;
+			children = (
+				01287B6826458E7D00C711A4 /* ATEMicon.png */,
+				01268DDE264159CD00DC8CB4 /* BMDSwitcherAPI.h */,
+				01268DDF264159CD00DC8CB4 /* BMDSwitcherAPIDispatch.cpp */,
+				01268DCA2641590500DC8CB4 /* AppDelegate.h */,
+				01268DCB2641590500DC8CB4 /* AppDelegate.mm */,
+				01268DCD2641590500DC8CB4 /* Assets.xcassets */,
+				01268DCF2641590500DC8CB4 /* MainMenu.xib */,
+				01268DD22641590500DC8CB4 /* Info.plist */,
+				01268DD32641590500DC8CB4 /* main.m */,
+				01268DD52641590500DC8CB4 /* ATEM_Camera_Control.entitlements */,
+			);
+			path = "ATEM Camera Control";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		01268DC62641590500DC8CB4 /* ATEM Camera Control */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 01268DD82641590500DC8CB4 /* Build configuration list for PBXNativeTarget "ATEM Camera Control" */;
+			buildPhases = (
+				01268DC32641590500DC8CB4 /* Sources */,
+				01268DC42641590500DC8CB4 /* Frameworks */,
+				01268DC52641590500DC8CB4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "ATEM Camera Control";
+			productName = "ATEM Camera Control";
+			productReference = 01268DC72641590500DC8CB4 /* ATEM Camera Control.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		01268DBF2641590500DC8CB4 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0920;
+				ORGANIZATIONNAME = "Nick Shaw";
+				TargetAttributes = {
+					01268DC62641590500DC8CB4 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 01268DC22641590500DC8CB4 /* Build configuration list for PBXProject "ATEM Camera Control" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 01268DBE2641590500DC8CB4;
+			productRefGroup = 01268DC82641590500DC8CB4 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				01268DC62641590500DC8CB4 /* ATEM Camera Control */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		01268DC52641590500DC8CB4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				01268DCE2641590500DC8CB4 /* Assets.xcassets in Resources */,
+				01268DD12641590500DC8CB4 /* MainMenu.xib in Resources */,
+				01287B6926458E7D00C711A4 /* ATEMicon.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		01268DC32641590500DC8CB4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				01268DD42641590500DC8CB4 /* main.m in Sources */,
+				01268DCC2641590500DC8CB4 /* AppDelegate.mm in Sources */,
+				01268DE0264159CD00DC8CB4 /* BMDSwitcherAPIDispatch.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		01268DCF2641590500DC8CB4 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				01268DD02641590500DC8CB4 /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		01268DD62641590500DC8CB4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		01268DD72641590500DC8CB4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		01268DD92641590500DC8CB4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = "ATEM Camera Control/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.antlerpost.ATEM-Camera-Control";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		01268DDA2641590500DC8CB4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = "ATEM Camera Control/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.antlerpost.ATEM-Camera-Control";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		01268DC22641590500DC8CB4 /* Build configuration list for PBXProject "ATEM Camera Control" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				01268DD62641590500DC8CB4 /* Debug */,
+				01268DD72641590500DC8CB4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		01268DD82641590500DC8CB4 /* Build configuration list for PBXNativeTarget "ATEM Camera Control" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				01268DD92641590500DC8CB4 /* Debug */,
+				01268DDA2641590500DC8CB4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 01268DBF2641590500DC8CB4 /* Project object */;
+}
