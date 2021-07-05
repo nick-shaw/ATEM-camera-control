@@ -33,11 +33,11 @@ double gradeGamma = 0.0;
 double gradeGain = 1.0;
 double gradeSat = 1.0;
 
-double memASettings[] = {0.35, 0.0, 18000.0, 8.0, 5600.0, 10.0};
-double memBSettings[] = {0.40, 0.0, 36000.0, 24.0, 3400.0, 0.0};
-double memCSettings[] = {0.50, 0.0, 36000.0, 20.0, 3400.0, 0.0};
-double memDSettings[] = {0.40, 0.0, 36000.0, 24.0, 3400.0, 0.0};
-double memESettings[] = {0.40, 0.0, 36000.0, 24.0, 3400.0, 0.0};
+double memASettings[] = {0.35, 0.0, 18000.0, 8.0, 5600.0, 10.0, 0.0, 0.0, 1.0, 1.0};
+double memBSettings[] = {0.40, 0.0, 36000.0, 24.0, 3400.0, 0.0, 0.0, 0.0, 1.0, 1.0};
+double memCSettings[] = {0.50, 0.0, 36000.0, 20.0, 3400.0, 0.0, 0.0, 0.0, 1.0, 1.0};
+double memDSettings[] = {0.40, 0.0, 36000.0, 24.0, 3400.0, 0.0, 0.0, 0.0, 1.0, 1.0};
+double memESettings[] = {0.40, 0.0, 36000.0, 24.0, 3400.0, 0.0, 0.0, 0.0, 1.0, 1.0};
 int memATimer = 0.0;
 int memBTimer = 0.0;
 int memCTimer = 0.0;
@@ -108,7 +108,7 @@ NSMutableString *switcherIP = [@"192.168.1.240" mutableCopy];
         tint = (int16_t)[[[NSUserDefaults standardUserDefaults] objectForKey:@"tint"] floatValue];
         lut = (int8_t)[[[NSUserDefaults standardUserDefaults] objectForKey:@"lut"] floatValue];
         lutEnabled = (int8_t)[[[NSUserDefaults standardUserDefaults] objectForKey:@"lutEnabled"] floatValue];
-        for (int i=0; i < 6; i++) {
+        for (int i=0; i < 10; i++) {
             memASettings[i] = (double)[[[NSUserDefaults standardUserDefaults] objectForKey:[@"memA" stringByAppendingString:[@(i) stringValue]]] floatValue];
             memBSettings[i] = (double)[[[NSUserDefaults standardUserDefaults] objectForKey:[@"memB" stringByAppendingString:[@(i) stringValue]]] floatValue];
             memCSettings[i] = (double)[[[NSUserDefaults standardUserDefaults] objectForKey:[@"memC" stringByAppendingString:[@(i) stringValue]]] floatValue];
@@ -141,6 +141,18 @@ NSMutableString *switcherIP = [@"192.168.1.240" mutableCopy];
     [self.tintFieldValue setFloatValue:tint];
     [self.tintSliderValue setFloatValue:tint];
     [self wbUpdate];
+    [self.gradeLiftField setFloatValue:gradeLift];
+    [self.gradeLiftSlider setFloatValue:gradeLift];
+    [self sendLift];
+    [self.gradeGammaField setFloatValue:gradeGamma];
+    [self.gradeGammaSlider setFloatValue:gradeGamma];
+    [self sendGamma];
+    [self.gradeGainField setFloatValue:gradeGain];
+    [self.gradeGainSlider setFloatValue:gradeGain];
+    [self sendGain];
+    [self.gradeSatField setFloatValue:gradeSat];
+    [self.gradeSatSlider setFloatValue:gradeSat];
+    [self sendSat];
     [self.lutSelect setIntValue:lut];
     [self.lutEnable setIntValue:lutEnabled];
     [self lutUpdate];
@@ -162,9 +174,13 @@ NSMutableString *switcherIP = [@"192.168.1.240" mutableCopy];
     [[NSUserDefaults standardUserDefaults] setFloat:gain forKey:@"gain"];
     [[NSUserDefaults standardUserDefaults] setFloat:kelvin forKey:@"kelvin"];
     [[NSUserDefaults standardUserDefaults] setFloat:tint forKey:@"tint"];
+    [[NSUserDefaults standardUserDefaults] setFloat:gradeLift forKey:@"gradeLift"];
+    [[NSUserDefaults standardUserDefaults] setFloat:gradeGamma forKey:@"gradeGamma"];
+    [[NSUserDefaults standardUserDefaults] setFloat:gradeGain forKey:@"gradeGain"];
+    [[NSUserDefaults standardUserDefaults] setFloat:gradeSat forKey:@"gradeSat"];
     [[NSUserDefaults standardUserDefaults] setFloat:lut forKey:@"lut"];
     [[NSUserDefaults standardUserDefaults] setFloat:lutEnabled forKey:@"lutEnabled"];
-    for (int i=0; i < 6; i++) {
+    for (int i=0; i < 10; i++) {
         [[NSUserDefaults standardUserDefaults] setFloat:memASettings[i] forKey:[@"memA" stringByAppendingString:[@(i) stringValue]]];
         [[NSUserDefaults standardUserDefaults] setFloat:memBSettings[i] forKey:[@"memB" stringByAppendingString:[@(i) stringValue]]];
         [[NSUserDefaults standardUserDefaults] setFloat:memCSettings[i] forKey:[@"memC" stringByAppendingString:[@(i) stringValue]]];
@@ -391,6 +407,10 @@ NSMutableString *switcherIP = [@"192.168.1.240" mutableCopy];
             gain = (int8_t)memASettings[3];
             kelvin = (int16_t)memASettings[4];
             tint = (int16_t)memASettings[5];
+            gradeLift = memASettings[6];
+            gradeGamma = memASettings[7];
+            gradeGain = memASettings[8];
+            gradeSat = memASettings[9];
             [self updateAll];
         }
         else {
@@ -400,6 +420,10 @@ NSMutableString *switcherIP = [@"192.168.1.240" mutableCopy];
             memASettings[3] = gain;
             memASettings[4] = kelvin;
             memASettings[5] = tint;
+            memASettings[6] = gradeLift;
+            memASettings[7] = gradeGamma;
+            memASettings[8] = gradeGain;
+            memASettings[9] = gradeSat;
         }
     }
 }
@@ -421,6 +445,10 @@ NSMutableString *switcherIP = [@"192.168.1.240" mutableCopy];
             gain = (int8_t)memBSettings[3];
             kelvin = (int16_t)memBSettings[4];
             tint = (int16_t)memBSettings[5];
+            gradeLift = memBSettings[6];
+            gradeGamma = memBSettings[7];
+            gradeGain = memBSettings[8];
+            gradeSat = memBSettings[9];
             [self updateAll];
         }
         else {
@@ -430,6 +458,10 @@ NSMutableString *switcherIP = [@"192.168.1.240" mutableCopy];
             memBSettings[3] = gain;
             memBSettings[4] = kelvin;
             memBSettings[5] = tint;
+            memBSettings[6] = gradeLift;
+            memBSettings[7] = gradeGamma;
+            memBSettings[8] = gradeGain;
+            memBSettings[9] = gradeSat;
         }
     }
 }
@@ -451,6 +483,10 @@ NSMutableString *switcherIP = [@"192.168.1.240" mutableCopy];
             gain = (int8_t)memCSettings[3];
             kelvin = (int16_t)memCSettings[4];
             tint = (int16_t)memCSettings[5];
+            gradeLift = memCSettings[6];
+            gradeGamma = memCSettings[7];
+            gradeGain = memCSettings[8];
+            gradeSat = memCSettings[9];
             [self updateAll];
         }
         else {
@@ -460,6 +496,10 @@ NSMutableString *switcherIP = [@"192.168.1.240" mutableCopy];
             memCSettings[3] = gain;
             memCSettings[4] = kelvin;
             memCSettings[5] = tint;
+            memCSettings[6] = gradeLift;
+            memCSettings[7] = gradeGamma;
+            memCSettings[8] = gradeGain;
+            memCSettings[9] = gradeSat;
         }
     }
 }
@@ -481,6 +521,10 @@ NSMutableString *switcherIP = [@"192.168.1.240" mutableCopy];
             gain = (int8_t)memDSettings[3];
             kelvin = (int16_t)memDSettings[4];
             tint = (int16_t)memDSettings[5];
+            gradeLift = memDSettings[6];
+            gradeGamma = memDSettings[7];
+            gradeGain = memDSettings[8];
+            gradeSat = memDSettings[9];
             [self updateAll];
         }
         else {
@@ -490,6 +534,10 @@ NSMutableString *switcherIP = [@"192.168.1.240" mutableCopy];
             memDSettings[3] = gain;
             memDSettings[4] = kelvin;
             memDSettings[5] = tint;
+            memDSettings[6] = gradeLift;
+            memDSettings[7] = gradeGamma;
+            memDSettings[8] = gradeGain;
+            memDSettings[9] = gradeSat;
         }
     }
 }
@@ -511,6 +559,10 @@ NSMutableString *switcherIP = [@"192.168.1.240" mutableCopy];
             gain = (int8_t)memESettings[3];
             kelvin = (int16_t)memESettings[4];
             tint = (int16_t)memESettings[5];
+            gradeLift = memESettings[6];
+            gradeGamma = memESettings[7];
+            gradeGain = memESettings[8];
+            gradeSat = memESettings[9];
             [self updateAll];
         }
         else {
@@ -520,6 +572,10 @@ NSMutableString *switcherIP = [@"192.168.1.240" mutableCopy];
             memESettings[3] = gain;
             memESettings[4] = kelvin;
             memESettings[5] = tint;
+            memESettings[6] = gradeLift;
+            memESettings[7] = gradeGamma;
+            memESettings[8] = gradeGain;
+            memESettings[9] = gradeSat;
         }
     }
 }
