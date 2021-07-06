@@ -13,9 +13,12 @@ Tested only with my ATEM Mini and Pocket Cinema Camera 4K
 
 * Pressing one momentarily restores the settings.
 
+* The ***Grading*** window settings were not included in stored memories in v1.0. This is added in v1.0.1. 
+
 * There is no feedback from the camera to the app. Therefore using the ***Auto Iris*** or ***Auto Focus*** buttons will put the focus and iris sliders out of sync with the camera.
 
 * The LUT controls have no effect. At least not on my camera. It seems that is not implemented on the Pocket 4K. Perhaps it works on other cameras.
+
 
 
 ## About
