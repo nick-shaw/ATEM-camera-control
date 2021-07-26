@@ -93,6 +93,16 @@
 - (IBAction)gradeLiftUpdate:(id)sender;
 - (IBAction)gradeGammaUpdate:(id)sender;
 - (IBAction)gradeSatUpdate:(id)sender;
+- (IBAction)runMacroZero:(id)sender;
+- (IBAction)runMacroOne:(id)sender;
+- (IBAction)runMacroTwo:(id)sender;
+- (IBAction)runMacroThree:(id)sender;
+- (IBAction)runMacroFour:(id)sender;
+- (IBAction)runMacroFive:(id)sender;
+- (IBAction)runMacroSix:(id)sender;
+- (IBAction)runMacroSeven:(id)sender;
+- (IBAction)runMacroNine:(id)sender;
+- (IBAction)runMacroEight:(id)sender;
 
 
 @end

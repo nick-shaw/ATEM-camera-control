@@ -15,6 +15,7 @@
 static const uint8_t kCameraAddress = 1;    // Camera Number 1
 IBMDSwitcher* switcher;
 IBMDSwitcherCameraControl* cameraControl;
+IBMDSwitcherMacroControl* macroControl;
 double focus = 0.35;
 double iris = 0.0;
 double zoom = 0.5;
@@ -81,6 +82,13 @@ NSMutableString *switcherIP = [@"192.168.1.240" mutableCopy];
             if (result != S_OK)
             {
                 NSRunAlertPanel(@"Camera Failure", @"Too bad!", @"Quit", nil, nil);
+                [NSApp terminate:self];
+            }
+            // Get camera control interface from switcher object
+            result = switcher->QueryInterface(IID_IBMDSwitcherMacroControl, (void**)&macroControl);
+            if (result != S_OK)
+            {
+                NSRunAlertPanel(@"Macro Failure", @"Too bad!", @"Quit", nil, nil);
                 [NSApp terminate:self];
             }
             [_memA sendActionOn:NSEventMaskLeftMouseDown];
@@ -632,6 +640,86 @@ NSMutableString *switcherIP = [@"192.168.1.240" mutableCopy];
     [self.gradeGammaField setFloatValue:gradeGamma];
     [self.gradeGammaSlider setFloatValue:gradeGamma];
     [self sendGamma];
+}
+
+- (IBAction)runMacroEight:(id)sender {
+    HRESULT result = macroControl->Run(8);
+    if (result != S_OK)
+    {
+        NSLog(@"Failed to send Macro Eight");
+    }
+}
+
+- (IBAction)runMacroNine:(id)sender {
+    HRESULT result = macroControl->Run(9);
+    if (result != S_OK)
+    {
+        NSLog(@"Failed to send Macro Nine");
+    }
+}
+
+- (IBAction)runMacroSeven:(id)sender {
+    HRESULT result = macroControl->Run(7);
+    if (result != S_OK)
+    {
+        NSLog(@"Failed to send Macro Seven");
+    }
+}
+
+- (IBAction)runMacroSix:(id)sender {
+    HRESULT result = macroControl->Run(6);
+    if (result != S_OK)
+    {
+        NSLog(@"Failed to send Macro Six");
+    }
+}
+
+- (IBAction)runMacroFive:(id)sender {
+    HRESULT result = macroControl->Run(5);
+    if (result != S_OK)
+    {
+        NSLog(@"Failed to send Macro Five");
+    }
+}
+
+- (IBAction)runMacroFour:(id)sender {
+    HRESULT result = macroControl->Run(4);
+    if (result != S_OK)
+    {
+        NSLog(@"Failed to send Macro Four");
+    }
+}
+
+- (IBAction)runMacroThree:(id)sender {
+    HRESULT result = macroControl->Run(3);
+    if (result != S_OK)
+    {
+        NSLog(@"Failed to send Macro Three");
+    }
+}
+
+- (IBAction)runMacroTwo:(id)sender {
+    HRESULT result = macroControl->Run(2);
+    if (result != S_OK)
+    {
+        NSLog(@"Failed to send Macro Two");
+    }
+}
+
+- (IBAction)runMacroOne:(id)sender {
+    HRESULT result = macroControl->Run(1);
+    if (result != S_OK)
+    {
+        NSLog(@"Failed to send Macro One");
+    }
+}
+
+- (IBAction)runMacroZero:(id)sender {
+    HRESULT result = macroControl->Run(0);
+    if (result != S_OK)
+    {
+        NSLog(@"Failed to send Macro Zero");
+    }
 }
 
 - (IBAction)gradeSatUpdate:(id)sender {

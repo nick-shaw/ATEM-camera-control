@@ -429,6 +429,63 @@
                                     </items>
                                 </menu>
                             </menuItem>
+                            <menuItem title="Macro" id="oXW-hV-H9H">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Macro" id="Zm1-QF-8JE">
+                                    <items>
+                                        <menuItem title="0" keyEquivalent="0" id="rNC-6g-p0x">
+                                            <connections>
+                                                <action selector="runMacroZero:" target="Voe-Tx-rLC" id="Joy-El-szb"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="1" keyEquivalent="1" id="y3V-W2-Lvm">
+                                            <connections>
+                                                <action selector="runMacroOne:" target="Voe-Tx-rLC" id="upL-EI-4q2"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="2" keyEquivalent="2" id="gaG-qr-RGg" userLabel="2">
+                                            <connections>
+                                                <action selector="runMacroTwo:" target="Voe-Tx-rLC" id="Lac-CT-y8Y"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="3" keyEquivalent="3" id="085-1p-fKO" userLabel="3">
+                                            <connections>
+                                                <action selector="runMacroThree:" target="Voe-Tx-rLC" id="0f1-0g-LbK"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="4" keyEquivalent="4" id="jut-Tb-bJP" userLabel="4">
+                                            <connections>
+                                                <action selector="runMacroFour:" target="Voe-Tx-rLC" id="qOx-dS-9Yq"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="5" keyEquivalent="5" id="vx8-dR-go5" userLabel="5">
+                                            <connections>
+                                                <action selector="runMacroFive:" target="Voe-Tx-rLC" id="k8G-Td-vcU"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="6" keyEquivalent="6" id="9TN-ar-YHA" userLabel="6">
+                                            <connections>
+                                                <action selector="runMacroSix:" target="Voe-Tx-rLC" id="U2n-43-x71"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="7" keyEquivalent="7" id="Fs9-u4-saX" userLabel="7">
+                                            <connections>
+                                                <action selector="runMacroSeven:" target="Voe-Tx-rLC" id="1vh-Vd-CdN"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="8" keyEquivalent="8" id="OJW-hT-OhT" userLabel="8">
+                                            <connections>
+                                                <action selector="runMacroEight:" target="Voe-Tx-rLC" id="JEA-HD-qQJ"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="9" keyEquivalent="9" id="hVj-Ga-8eP" userLabel="9">
+                                            <connections>
+                                                <action selector="runMacroNine:" target="Voe-Tx-rLC" id="Dbd-pQ-dag"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
                         </items>
                     </menu>
                 </menuItem>
