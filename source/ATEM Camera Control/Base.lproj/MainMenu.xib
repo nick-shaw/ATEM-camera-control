@@ -16,6 +16,7 @@
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate">
             <connections>
                 <outlet property="assistEnable" destination="D6X-MA-8KF" id="arQ-0O-bet"/>
+                <outlet property="commandComboBox" destination="LhE-ZR-xgj" id="wmT-IJ-xP9"/>
                 <outlet property="falseEnable" destination="jBB-kg-WK6" id="8dq-dg-3ls"/>
                 <outlet property="focusButton" destination="2ql-UN-x7V" id="9cc-5V-Ciq"/>
                 <outlet property="focusFieldValue" destination="fYJ-PK-UfK" id="2XM-XX-IeR"/>
@@ -1156,6 +1157,34 @@
                 </subviews>
             </view>
             <point key="canvasLocation" x="495" y="312"/>
+        </window>
+        <window title="Midi" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="B4z-QA-lbb">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="179" y="218" width="480" height="270"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1792" height="1097"/>
+            <view key="contentView" id="PI3-s7-KRn">
+                <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LhE-ZR-xgj">
+                        <rect key="frame" x="18" y="226" width="103" height="25"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="1Bc-gp-ltC" id="usd-Gp-zwQ">
+                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="menu"/>
+                            <menu key="menu" id="FXD-Ha-fa0">
+                                <items>
+                                    <menuItem title="Item 1" state="on" id="1Bc-gp-ltC"/>
+                                    <menuItem title="Item 2" id="doV-fn-dwf"/>
+                                    <menuItem title="Item 3" id="aMn-mi-QCE"/>
+                                </items>
+                            </menu>
+                        </popUpButtonCell>
+                    </popUpButton>
+                </subviews>
+            </view>
+            <point key="canvasLocation" x="963" y="177"/>
         </window>
     </objects>
 </document>

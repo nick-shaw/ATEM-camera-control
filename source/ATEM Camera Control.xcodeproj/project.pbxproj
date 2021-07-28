@@ -13,7 +13,47 @@
 		01268DD42641590500DC8CB4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 01268DD32641590500DC8CB4 /* main.m */; };
 		01268DE0264159CD00DC8CB4 /* BMDSwitcherAPIDispatch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01268DDF264159CD00DC8CB4 /* BMDSwitcherAPIDispatch.cpp */; };
 		01287B6926458E7D00C711A4 /* ATEMicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 01287B6826458E7D00C711A4 /* ATEMicon.png */; };
+		01BBD98A26B197070058B9A4 /* MIKMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01BBD96F26AF0E490058B9A4 /* MIKMIDI.framework */; };
+		01BBD98B26B197070058B9A4 /* MIKMIDI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 01BBD96F26AF0E490058B9A4 /* MIKMIDI.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		01BBD96E26AF0E490058B9A4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 01BBD96726AF0E490058B9A4 /* MIKMIDI.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9D74EEA517A7129300BEE89F;
+			remoteInfo = MIKMIDI;
+		};
+		01BBD97026AF0E490058B9A4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 01BBD96726AF0E490058B9A4 /* MIKMIDI.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9DAF8B061A7AFF1100F46528;
+			remoteInfo = "MIKMIDI-iOS";
+		};
+		01BBD97226AF0E490058B9A4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 01BBD96726AF0E490058B9A4 /* MIKMIDI.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9D4DF13A1AAB57430065F004;
+			remoteInfo = "MIKMIDI Tests";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		01BBD98C26B197070058B9A4 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				01BBD98B26B197070058B9A4 /* MIKMIDI.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		01268DC72641590500DC8CB4 /* ATEM Camera Control.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ATEM Camera Control.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -27,6 +67,7 @@
 		01268DDE264159CD00DC8CB4 /* BMDSwitcherAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMDSwitcherAPI.h; sourceTree = "<group>"; };
 		01268DDF264159CD00DC8CB4 /* BMDSwitcherAPIDispatch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BMDSwitcherAPIDispatch.cpp; sourceTree = "<group>"; };
 		01287B6826458E7D00C711A4 /* ATEMicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ATEMicon.png; sourceTree = "<group>"; };
+		01BBD96726AF0E490058B9A4 /* MIKMIDI.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MIKMIDI.xcodeproj; path = ../Frameworks/MIKMIDI/Framework/MIKMIDI.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -34,6 +75,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				01BBD98A26B197070058B9A4 /* MIKMIDI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,8 +85,10 @@
 		01268DBE2641590500DC8CB4 = {
 			isa = PBXGroup;
 			children = (
+				01BBD96726AF0E490058B9A4 /* MIKMIDI.xcodeproj */,
 				01268DC92641590500DC8CB4 /* ATEM Camera Control */,
 				01268DC82641590500DC8CB4 /* Products */,
+				01BBD97926AF11CC0058B9A4 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -73,6 +117,23 @@
 			path = "ATEM Camera Control";
 			sourceTree = "<group>";
 		};
+		01BBD96826AF0E490058B9A4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				01BBD96F26AF0E490058B9A4 /* MIKMIDI.framework */,
+				01BBD97126AF0E490058B9A4 /* MIKMIDI.framework */,
+				01BBD97326AF0E490058B9A4 /* MIKMIDI Tests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		01BBD97926AF11CC0058B9A4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -83,6 +144,7 @@
 				01268DC32641590500DC8CB4 /* Sources */,
 				01268DC42641590500DC8CB4 /* Frameworks */,
 				01268DC52641590500DC8CB4 /* Resources */,
+				01BBD98C26B197070058B9A4 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -119,12 +181,42 @@
 			mainGroup = 01268DBE2641590500DC8CB4;
 			productRefGroup = 01268DC82641590500DC8CB4 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 01BBD96826AF0E490058B9A4 /* Products */;
+					ProjectRef = 01BBD96726AF0E490058B9A4 /* MIKMIDI.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				01268DC62641590500DC8CB4 /* ATEM Camera Control */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		01BBD96F26AF0E490058B9A4 /* MIKMIDI.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = MIKMIDI.framework;
+			remoteRef = 01BBD96E26AF0E490058B9A4 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		01BBD97126AF0E490058B9A4 /* MIKMIDI.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = MIKMIDI.framework;
+			remoteRef = 01BBD97026AF0E490058B9A4 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		01BBD97326AF0E490058B9A4 /* MIKMIDI Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "MIKMIDI Tests.xctest";
+			remoteRef = 01BBD97226AF0E490058B9A4 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		01268DC52641590500DC8CB4 /* Resources */ = {
@@ -276,12 +368,12 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "ATEM Camera Control/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				MARKETING_VERSION = 1.0.2;
+				MARKETING_VERSION = 1.0.3b1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.antlerpost.ATEM-Camera-Control";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -296,12 +388,12 @@
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "ATEM Camera Control/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				MARKETING_VERSION = 1.0.2;
+				MARKETING_VERSION = 1.0.3b1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.antlerpost.ATEM-Camera-Control";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

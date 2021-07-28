@@ -10,6 +10,10 @@
 #import "BMDSwitcherAPI.h"
 #import <list>
 
+@class MIKMIDIDeviceManager;
+@class MIKMIDIDevice;
+@class MIKMIDISourceEndpoint;
+
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
 @property (weak) IBOutlet NSButton *focusButton;
@@ -52,6 +56,13 @@
 @property (weak) IBOutlet NSSlider *gradeGammaSlider;
 @property (weak) IBOutlet NSTextField *gradeSatField;
 @property (weak) IBOutlet NSSlider *gradeSatSlider;
+
+@property (nonatomic, strong, readonly) NSArray *availableDevices;
+@property (nonatomic, strong) MIKMIDIDevice *device;
+@property (nonatomic, strong) MIKMIDISourceEndpoint *source;
+@property (nonatomic, readonly) NSArray *availableCommands;
+@property (weak) IBOutlet NSPopUpButton *commandComboBox;
+
 
 - (IBAction)doFocus:(id)sender;
 - (IBAction)doIris:(id)sender;

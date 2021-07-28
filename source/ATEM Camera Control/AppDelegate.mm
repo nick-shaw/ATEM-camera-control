@@ -8,14 +8,20 @@
 
 #import "AppDelegate.h"
 
+#import <MIKMIDI/MIKMIDI.h>
+
 #include <pthread.h>
 #include <libkern/OSAtomic.h>
 #include <string>
+
+#import <mach/mach.h>
+#import <mach/mach_time.h>
 
 static const uint8_t kCameraAddress = 1;    // Camera Number 1
 IBMDSwitcher* switcher;
 IBMDSwitcherCameraControl* cameraControl;
 IBMDSwitcherMacroControl* macroControl;
+IBMDSwitcherFairlightAudioMixer* fairlightControl;
 double focus = 0.35;
 double iris = 0.0;
 double zoom = 0.5;
@@ -50,11 +56,20 @@ NSMutableString *switcherIP = [@"192.168.1.240" mutableCopy];
 @interface AppDelegate ()
 
 @property (weak) IBOutlet NSWindow *window;
+@property (nonatomic, strong) MIKMIDIConnectionManager *connectionManager;
+@property (nonatomic, strong) MIKMIDIDeviceManager *midiDeviceManager;
 @end
 
 @implementation AppDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+    if (self) {
+        _connectionManager = [[MIKMIDIConnectionManager alloc] initWithName:@"com.antlerpost.ATEM-Camera-Control.ConnectionManager" delegate:NULL eventHandler:^(MIKMIDISourceEndpoint *source, NSArray<MIKMIDICommand *> *commands) {
+            for (MIKMIDIChannelVoiceCommand *command in commands) { [self handleMIDICommand:command]; }
+        }];
+        _connectionManager.automaticallySavesConfiguration = NO;
+        _midiDeviceManager = [MIKMIDIDeviceManager sharedDeviceManager];
+    }
     [self loadPrefs];
     // Create discovery instance
     IBMDSwitcherDiscovery* discovery = CreateBMDSwitcherDiscoveryInstance();
@@ -84,11 +99,18 @@ NSMutableString *switcherIP = [@"192.168.1.240" mutableCopy];
                 NSRunAlertPanel(@"Camera Failure", @"Too bad!", @"Quit", nil, nil);
                 [NSApp terminate:self];
             }
-            // Get camera control interface from switcher object
+            // Get macro interface from switcher object
             result = switcher->QueryInterface(IID_IBMDSwitcherMacroControl, (void**)&macroControl);
             if (result != S_OK)
             {
                 NSRunAlertPanel(@"Macro Failure", @"Too bad!", @"Quit", nil, nil);
+                [NSApp terminate:self];
+            }
+            // Get macro interface from switcher object
+            result = switcher->QueryInterface(IID_IBMDSwitcherFairlightAudioMixer, (void**)&fairlightControl);
+            if (result != S_OK)
+            {
+                NSRunAlertPanel(@"Fairlight Failure", @"Too bad!", @"Quit", nil, nil);
                 [NSApp terminate:self];
             }
             [_memA sendActionOn:NSEventMaskLeftMouseDown];
@@ -98,6 +120,7 @@ NSMutableString *switcherIP = [@"192.168.1.240" mutableCopy];
             [_memE sendActionOn:NSEventMaskLeftMouseDown];
             [NSThread sleepForTimeInterval:0.5];
             [self updateAll];
+            [self setDevice:self.availableDevices[0]];
         }
     }
 }
@@ -127,6 +150,14 @@ NSMutableString *switcherIP = [@"192.168.1.240" mutableCopy];
 }
 
 - (void) updateAll {
+    [self sendSysex:[@"ba0" stringByAppendingString:[NSString stringWithFormat:@"%2X", (int)(1 * 256 + focus * 127)]]];
+    [self sendSysex:[@"ba0" stringByAppendingString:[NSString stringWithFormat:@"%2X", (int)(2 * 256 + (1 - iris) * 127)]]];
+    [self sendSysex:[@"ba0" stringByAppendingString:[NSString stringWithFormat:@"%2X", (int)(3 * 256 + 127 * shutter / 36000)]]];
+    [self sendSysex:[@"ba0" stringByAppendingString:[NSString stringWithFormat:@"%2X", (int)(4 * 256 + 127 * (float)(gain + 12) / 44)]]];
+    [self sendSysex:[@"ba0" stringByAppendingString:[NSString stringWithFormat:@"%2X", (int)(5 * 256 + 127 * (float)(kelvin - 2500) / 7500)]]];
+    [self sendSysex:[@"ba0" stringByAppendingString:[NSString stringWithFormat:@"%2X", (int)(6 * 256 + 127 * (float)(tint + 50) / 100)]]];
+    [self sendSysex:[@"ba0" stringByAppendingString:[NSString stringWithFormat:@"%2X", 7 * 256 + (int)(127 * (gradeLift + 1) / 2)]]];
+    [self sendSysex:[@"ba0" stringByAppendingString:[NSString stringWithFormat:@"%2X", 8 * 256 + (int)(127 * gradeSat / 2)]]];
     [self.focusFieldValue setFloatValue:focus];
     [self.focusSliderValue setFloatValue:focus];
     [self focusUpdate];
@@ -235,24 +266,28 @@ NSMutableString *switcherIP = [@"192.168.1.240" mutableCopy];
 
 - (IBAction)focusSliderUpdate:(id)sender {
     focus = [sender floatValue];
+    [self sendSysex:[@"ba0" stringByAppendingString:[NSString stringWithFormat:@"%2X", (int)(1 * 256 + focus * 127)]]];
     [self.focusFieldValue setFloatValue:focus];
     [self focusUpdate];
 }
 
 - (IBAction)focusFieldUpdate:(id)sender {
     focus = [sender floatValue];
+    [self sendSysex:[@"ba0" stringByAppendingString:[NSString stringWithFormat:@"%2X", (int)(1 * 256 + focus * 127)]]];
     [self.focusSliderValue setFloatValue:focus];
     [self focusUpdate];
 }
 
 - (IBAction)irisSliderUpdate:(id)sender {
     iris = [sender floatValue];
+    [self sendSysex:[@"ba0" stringByAppendingString:[NSString stringWithFormat:@"%2X", (int)(2 * 256 + (1 - iris) * 127)]]];
     [self.irisFieldValue setFloatValue:iris];
     [self irisUpdate];
 }
 
 - (IBAction)irisFieldUpdate:(id)sender {
     iris = [sender floatValue];
+    [self sendSysex:[@"ba0" stringByAppendingString:[NSString stringWithFormat:@"%2X", (int)(2 * 256 + (1 - iris) * 127)]]];
     [self.irisSliderValue setFloatValue:iris];
     [self irisUpdate];
 }
@@ -271,18 +306,21 @@ NSMutableString *switcherIP = [@"192.168.1.240" mutableCopy];
 
 - (IBAction)shutterSliderUpdate:(id)sender {
     shutter = (int32_t)[sender integerValue] * 100;
+    [self sendSysex:[@"ba0" stringByAppendingString:[NSString stringWithFormat:@"%2X", (int)(3 * 256 + 127 * shutter / 36000)]]];
     [self.shutterFieldValue setIntegerValue:shutter / 100];
     [self shutterUpdate];
 }
 
 - (IBAction)shutterFieldUpdate:(id)sender {
     shutter = (int32_t)[sender integerValue] * 100;
+    [self sendSysex:[@"ba0" stringByAppendingString:[NSString stringWithFormat:@"%2X", (int)(3 * 256 + 127 * shutter / 36000)]]];
     [self.shutterSliderValue setIntegerValue:shutter / 100];
     [self shutterUpdate];
 }
 
 - (IBAction)gainSliderUpdate:(id)sender {
     gain = [sender integerValue];
+    [self sendSysex:[@"ba0" stringByAppendingString:[NSString stringWithFormat:@"%2X", (int)(4 * 256 + 127 * (float)(gain + 12) / 44)]]];
     [self.gainFieldValue setIntValue:gain];
     [self.gainStepper setIntValue:gain];
     [self gainUpdate];
@@ -290,6 +328,7 @@ NSMutableString *switcherIP = [@"192.168.1.240" mutableCopy];
 
 - (IBAction)gainFieldUpdate:(id)sender {
     gain = [sender integerValue];
+    [self sendSysex:[@"ba0" stringByAppendingString:[NSString stringWithFormat:@"%2X", (int)(4 * 256 + 127 * (float)(gain + 12) / 44)]]];
     [self.gainSliderValue setIntValue:gain];
     [self.gainStepper setIntValue:gain];
     [self gainUpdate];
@@ -299,6 +338,7 @@ NSMutableString *switcherIP = [@"192.168.1.240" mutableCopy];
     [self.gainFieldValue setStringValue:[sender stringValue]];
     [self.gainSliderValue setIntegerValue:[sender integerValue]];
     gain = [sender integerValue];
+    [self sendSysex:[@"ba0" stringByAppendingString:[NSString stringWithFormat:@"%2X", (int)(4 * 256 + 127 * (float)(gain + 12) / 44)]]];
     [self gainUpdate];
 }
 
@@ -307,6 +347,7 @@ NSMutableString *switcherIP = [@"192.168.1.240" mutableCopy];
     if (gain > 32) {
         gain = 32;
     }
+    [self sendSysex:[@"ba0" stringByAppendingString:[NSString stringWithFormat:@"%2X", (int)(4 * 256 + 127 * (float)(gain + 12) / 44)]]];
     [self.gainSliderValue setIntValue:gain];
     [self.gainFieldValue setIntValue:gain];
     [self.gainStepper setIntValue:gain];
@@ -318,6 +359,7 @@ NSMutableString *switcherIP = [@"192.168.1.240" mutableCopy];
     if (gain < -12) {
         gain = -12;
     }
+    [self sendSysex:[@"ba0" stringByAppendingString:[NSString stringWithFormat:@"%2X", (int)(4 * 256 + 127 * (float)(gain + 12) / 44)]]];
     [self.gainSliderValue setIntValue:gain];
     [self.gainFieldValue setIntValue:gain];
     [self.gainStepper setIntValue:gain];
@@ -326,24 +368,28 @@ NSMutableString *switcherIP = [@"192.168.1.240" mutableCopy];
 
 - (IBAction)kelvinSliderupdate:(id)sender {
     kelvin = (int16_t)[sender integerValue];
+    [self sendSysex:[@"ba0" stringByAppendingString:[NSString stringWithFormat:@"%2X", (int)(5 * 256 + 127 * (float)(kelvin - 2500) / 7500)]]];
     [self.kelvinFieldValue setIntValue:kelvin];
     [self wbUpdate];
 }
 
 - (IBAction)kelvinFieldUpdate:(id)sender {
     kelvin = (int16_t)[sender integerValue];
+    [self sendSysex:[@"ba0" stringByAppendingString:[NSString stringWithFormat:@"%2X", (int)(5 * 256 + 127 * (float)(kelvin - 2500) / 7500)]]];
     [self.kelvinSliderValue setIntValue:kelvin];
     [self wbUpdate];
 }
 
 - (IBAction)tintSliderUpdate:(id)sender {
     tint = (int16_t)[sender integerValue];
+    [self sendSysex:[@"ba0" stringByAppendingString:[NSString stringWithFormat:@"%2X", (int)(6 * 256 + 127 * (float)(tint + 50) / 100)]]];
     [self.tintFieldValue setIntValue:tint];
     [self wbUpdate];
 }
 
 - (IBAction)tintFieldUpdate:(id)sender {
     tint = (int16_t)[sender integerValue];
+    [self sendSysex:[@"ba0" stringByAppendingString:[NSString stringWithFormat:@"%2X", (int)(6 * 256 + 127 * (float)(tint + 50) / 100)]]];
     [self.tintSliderValue setIntValue:tint];
     [self wbUpdate];
 }
@@ -594,6 +640,7 @@ NSMutableString *switcherIP = [@"192.168.1.240" mutableCopy];
 
 - (IBAction)focusNearer:(id)sender {
     focus -= 0.01;
+    [self sendSysex:[@"ba0" stringByAppendingString:[NSString stringWithFormat:@"%2X", (int)(1 * 256 + focus * 127)]]];
     if (focus < 0.0) {
         focus = 0.0;
     }
@@ -604,6 +651,7 @@ NSMutableString *switcherIP = [@"192.168.1.240" mutableCopy];
 
 - (IBAction)focusFurther:(id)sender {
     focus += 0.01;
+    [self sendSysex:[@"ba0" stringByAppendingString:[NSString stringWithFormat:@"%2X", (int)(1 * 256 + focus * 127)]]];
     if (focus > 1.0) {
         focus = 1.0;
     }
@@ -633,6 +681,7 @@ NSMutableString *switcherIP = [@"192.168.1.240" mutableCopy];
     [self.gradeLiftField setFloatValue:gradeLift];
     [self.gradeLiftSlider setFloatValue:gradeLift];
     [self sendLift];
+    [self sendSysex:[@"ba0" stringByAppendingString:[NSString stringWithFormat:@"%2X", 7 * 256 + (int)(127 * (gradeLift + 1) / 2)]]];
 }
 
 - (IBAction)gradeGammaUpdate:(id)sender {
@@ -903,6 +952,12 @@ NSMutableString *switcherIP = [@"192.168.1.240" mutableCopy];
     {
         NSLog(@"Failed to send Assist");
     }
+    else
+    {
+        [self sendSysex:[@"9a0" stringByAppendingString:[NSString stringWithFormat:@"%2X", (int)(8 * 256 + assistEnabled * 127)]]];
+        [self sendSysex:[@"9a0" stringByAppendingString:[NSString stringWithFormat:@"%2X", (int)(9 * 256 + falseEnabled * 127)]]];
+        [self sendSysex:[@"9a0" stringByAppendingString:[NSString stringWithFormat:@"%2X", (int)(10 * 256 + zebraEnabled * 127)]]];
+    }
 }
 
 - (void) overlayUpdate {
@@ -916,6 +971,251 @@ NSMutableString *switcherIP = [@"192.168.1.240" mutableCopy];
     if (result != S_OK)
     {
         NSLog(@"Failed to send Overlay");
+    }
+    else
+    {
+        [self sendSysex:[@"9a0" stringByAppendingString:[NSString stringWithFormat:@"%2X", (int)(11 * 256 + overlayEnabled * 127)]]];
+    }
+}
+
+@synthesize availableCommands = _availableCommands;
+- (NSArray *)availableCommands
+{
+    if (_availableCommands == nil) {
+        MIKMIDISystemExclusiveCommand *identityRequest = [MIKMIDISystemExclusiveCommand identityRequestCommand];
+        NSString *identityRequestString = [NSString stringWithFormat:@"%@", identityRequest.data];
+        identityRequestString = [identityRequestString substringWithRange:NSMakeRange(1, identityRequestString.length-2)];
+        _availableCommands = @[@{@"name": @"Identity Request",
+                                 @"value": identityRequestString}];
+    }
+    return _availableCommands;
+}
+
+- (void)handleMIDICommand:(MIKMIDICommand *)command
+{
+//    printf("Status Byte: %d\n", [command statusByte]);
+//    printf("Data Byte 1: %d\n", [command dataByte1]);
+//    printf("Data Byte 2: %d\n", [command dataByte2]);
+    if ([command statusByte] == 186) {
+        if ([command dataByte1] == 1) {
+            focus = (float)[command dataByte2] / 127;
+            [self.focusSliderValue setFloatValue:focus];
+            [self.focusFieldValue setFloatValue:focus];
+            [self focusUpdate];
+        }
+        if ([command dataByte1] == 2) {
+            iris = 1.0 - (float)[command dataByte2] / 127;
+            [self.irisSliderValue setFloatValue:iris];
+            [self.irisFieldValue setFloatValue:iris];
+            [self irisUpdate];
+        }
+        if ([command dataByte1] == 3) {
+            shutter = 36000 * (float)[command dataByte2] / 127;
+            [self.shutterSliderValue setFloatValue:shutter / 100];
+            [self.shutterFieldValue setFloatValue:shutter / 100];
+            [self shutterUpdate];
+        }
+        if ([command dataByte1] == 4) {
+            gain = (int)(2 * (44 * (float)[command dataByte2] / 127 - 12)) / 2;
+            [self.gainSliderValue setFloatValue:gain];
+            [self.gainFieldValue setFloatValue:gain];
+            [self gainUpdate];
+        }
+        if ([command dataByte1] == 5) {
+            kelvin = (int)(7500 * (float)[command dataByte2] / 127 + 2500);
+            [self.kelvinSliderValue setFloatValue:kelvin];
+            [self.kelvinFieldValue setFloatValue:kelvin];
+            [self wbUpdate];
+        }
+        if ([command dataByte1] == 6) {
+            tint = (int)(100 * (float)[command dataByte2] / 127 - 50);
+            [self.tintSliderValue setFloatValue:tint];
+            [self.tintFieldValue setFloatValue:tint];
+            [self wbUpdate];
+        }
+        if ([command dataByte1] == 7) {
+            gradeLift = (float)[command dataByte2] * 2 / 127 - 1;
+            [self.gradeLiftSlider setFloatValue:gradeLift];
+            [self.gradeLiftField setFloatValue:gradeLift];
+            [self sendLift];
+        }
+        if ([command dataByte1] == 8) {
+            gradeSat = (float)[command dataByte2] * 2 / 127;
+            [self.gradeSatSlider setFloatValue:gradeSat];
+            [self.gradeSatField setFloatValue:gradeSat];
+            [self sendSat];
+        }
+        if ([command dataByte1] == 9) {
+            double faderValue = (double)[command dataByte2]/127;
+            faderValue = pow(faderValue, 0.3);
+            HRESULT result = fairlightControl->SetMasterOutFaderGain(faderValue * 110 - 100);
+            if (result != S_OK) {
+                NSLog(@"Master fader error");
+            }
+        }
+    }
+    if ([command statusByte] == 154) {
+        if ([command dataByte1] == 0 && [command dataByte2] == 127) {
+            [self doFocus:NULL];
+        }
+        if ([command dataByte1] == 1 && [command dataByte2] == 127) {
+            [self doIris:NULL];
+        }
+        if ([command dataByte1] == 6 && [command dataByte2] == 127) {
+            gradeLift = 0.0;
+            [[self gradeLiftField] setFloatValue:gradeLift];
+            [[self gradeLiftSlider] setFloatValue:gradeLift];
+            [self sendSysex:[@"ba0" stringByAppendingString:[NSString stringWithFormat:@"%2X", 7 * 256 + (int)(127 * (gradeLift + 1) / 2)]]];
+            [self sendLift];
+        }
+        if ([command dataByte1] == 7 && [command dataByte2] == 127) {
+            gradeSat = 1.0;
+            [[self gradeSatField] setFloatValue:gradeSat];
+            [[self gradeSatSlider] setFloatValue:gradeSat];
+            [self sendSysex:[@"ba0" stringByAppendingString:[NSString stringWithFormat:@"%2X", 8 * 256 + (int)(127 * gradeSat / 2)]]];
+            [self sendSat];
+        }
+        if ([command dataByte1] == 16 && [command dataByte2] == 127) {
+            focus = memASettings[0];
+            iris = memASettings[1];
+            shutter = (int32_t)memASettings[2];
+            gain = (int8_t)memASettings[3];
+            kelvin = (int16_t)memASettings[4];
+            tint = (int16_t)memASettings[5];
+            gradeLift = memASettings[6];
+            gradeGamma = memASettings[7];
+            gradeGain = memASettings[8];
+            gradeSat = memASettings[9];
+            [self updateAll];
+        }
+        if ([command dataByte1] == 17 && [command dataByte2] == 127) {
+            focus = memBSettings[0];
+            iris = memBSettings[1];
+            shutter = (int32_t)memBSettings[2];
+            gain = (int8_t)memBSettings[3];
+            kelvin = (int16_t)memBSettings[4];
+            tint = (int16_t)memBSettings[5];
+            gradeLift = memBSettings[6];
+            gradeGamma = memBSettings[7];
+            gradeGain = memBSettings[8];
+            gradeSat = memBSettings[9];
+            [self updateAll];
+        }
+        if ([command dataByte1] == 18 && [command dataByte2] == 127) {
+            focus = memCSettings[0];
+            iris = memCSettings[1];
+            shutter = (int32_t)memCSettings[2];
+            gain = (int8_t)memCSettings[3];
+            kelvin = (int16_t)memCSettings[4];
+            tint = (int16_t)memCSettings[5];
+            gradeLift = memCSettings[6];
+            gradeGamma = memCSettings[7];
+            gradeGain = memCSettings[8];
+            gradeSat = memCSettings[9];
+            [self updateAll];
+        }
+        if ([command dataByte1] == 19 && [command dataByte2] == 127) {
+            focus = memDSettings[0];
+            iris = memDSettings[1];
+            shutter = (int32_t)memDSettings[2];
+            gain = (int8_t)memDSettings[3];
+            kelvin = (int16_t)memDSettings[4];
+            tint = (int16_t)memDSettings[5];
+            gradeLift = memDSettings[6];
+            gradeGamma = memDSettings[7];
+            gradeGain = memDSettings[8];
+            gradeSat = memDSettings[9];
+            [self updateAll];
+        }
+        if ([command dataByte1] == 20 && [command dataByte2] == 127) {
+            focus = memESettings[0];
+            iris = memESettings[1];
+            shutter = (int32_t)memESettings[2];
+            gain = (int8_t)memESettings[3];
+            kelvin = (int16_t)memESettings[4];
+            tint = (int16_t)memESettings[5];
+            gradeLift = memESettings[6];
+            gradeGamma = memESettings[7];
+            gradeGain = memESettings[8];
+            gradeSat = memESettings[9];
+            [self updateAll];
+        }
+    }
+    if ([command statusByte] == 138) {
+        if ([command dataByte1] == 8 && [command dataByte2] == 0) {
+            assistEnabled = not(assistEnabled);
+            [[self assistEnable] setIntValue:assistEnabled];
+            [self assistUpdate];
+        }
+        if ([command dataByte1] == 9 && [command dataByte2] == 0) {
+            falseEnabled = not(falseEnabled);
+            [[self falseEnable] setIntValue:falseEnabled];
+            [self assistUpdate];
+        }
+        if ([command dataByte1] == 10 && [command dataByte2] == 0) {
+            zebraEnabled = not(zebraEnabled);
+            [[self zebraEnable] setIntValue:zebraEnabled];
+            [self assistUpdate];
+        }
+        if ([command dataByte1] == 11 && [command dataByte2] == 0) {
+            overlayEnabled = not(overlayEnabled);
+            [[self overlayEnable] setIntValue:overlayEnabled];
+            [self overlayUpdate];
+        }
+    }
+}
+
++ (NSSet *)keyPathsForValuesAffectingAvailableDevices { return [NSSet setWithObject:@"connectionManager.availableDevices"]; }
+- (NSArray *)availableDevices { return self.connectionManager.availableDevices; }
+
+- (void)setDevice:(MIKMIDIDevice *)device
+{
+    if (device != _device) {
+        if (_device) [self.connectionManager disconnectFromDevice:_device];
+        _device = device;
+        if (_device) {
+            NSError *error = nil;
+            if (![self.connectionManager connectToDevice:_device error:&error]) {
+                [NSApp presentError:error];
+            }
+        }
+    }
+}
+
+// We only want to connect to the device that the user selects
+- (MIKMIDIAutoConnectBehavior)connectionManager:(MIKMIDIConnectionManager *)manager shouldConnectToNewlyAddedDevice:(MIKMIDIDevice *)device
+{
+    return MIKMIDIAutoConnectBehaviorDoNotConnect;
+}
+
+- (void)sendSysex:(NSString*) theCommand
+{
+    NSString *commandString = [theCommand stringByReplacingOccurrencesOfString:@" " withString:@""];
+    if (!commandString || commandString.length == 0) {
+        return;
+    }
+    
+    struct MIDIPacket packet;
+    packet.timeStamp = mach_absolute_time();
+    packet.length = commandString.length / 2;
+    
+    char byte_chars[3] = {'\0','\0','\0'};
+    for (int i = 0; i < packet.length; i++) {
+        byte_chars[0] = [commandString characterAtIndex:i*2];
+        byte_chars[1] = [commandString characterAtIndex:i*2+1];
+        packet.data[i] = strtol(byte_chars, NULL, 16);;
+    }
+
+    MIKMIDICommand *command = [MIKMIDICommand commandWithMIDIPacket:&packet];
+//    NSLog(@"Sending idenity request command: %@", command);
+    
+    NSArray *destinations = [self.device.entities valueForKeyPath:@"@unionOfArrays.destinations"];
+    if (![destinations count]) return;
+    for (MIKMIDIDestinationEndpoint *destination in destinations) {
+        NSError *error = nil;
+        if (![self.midiDeviceManager sendCommands:@[command] toEndpoint:destination error:&error]) {
+            NSLog(@"Unable to send command %@ to endpoint %@: %@", command, destination, error);
+        }
     }
 }
 
