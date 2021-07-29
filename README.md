@@ -19,11 +19,15 @@ Tested only with my ATEM Mini and Pocket Cinema Camera 4K
 
 * The LUT controls have no effect. At least not on my camera. It seems that is not implemented on the Pocket 4K. Perhaps it works on other cameras.
 
+* Version 1.0.3b1 includes the addition of some crude MIDI control. This is implemented by copying and pasting blocks of code from the [MIKMIDI](https://github.com/mixedinkey-opensource/MIKMIDI) samples, and hacking at them until it works. It is in no way robust, and probably includes code that is unnecessary but I have copied across because I did not understand what it did. It is also currently hard coded to my own setup which is a Behringer X-Touch Mini, which shows up as the third MIDI device (after Network and Bluetooth). Unless your setup is identical to mine, MIDI control will probably not work without altering the code.
 
+![X-Touch Mini](./images/x_touch_mini.jpg)
 
 ## About
 * The main application code is Copyright (c) 2021 Antler Post
 
 * The ATEM Switcher SDK is Copyright (c) 2020 Blackmagic Design
 
-* This software is released under terms of New BSD License: [https://opensource.org/licenses/BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause)
+* MIKMIDI is Copyright (c) 2013 Mixed In Key, LLC. 
+
+* This software is released under the terms of New BSD License: [https://opensource.org/licenses/BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause)
