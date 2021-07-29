@@ -120,7 +120,7 @@ NSMutableString *switcherIP = [@"192.168.1.240" mutableCopy];
             [_memE sendActionOn:NSEventMaskLeftMouseDown];
             [NSThread sleepForTimeInterval:0.5];
             [self updateAll];
-            [self setDevice:self.availableDevices[0]];
+            [self setDevice:self.availableDevices[2]];
         }
     }
 }
@@ -158,6 +158,11 @@ NSMutableString *switcherIP = [@"192.168.1.240" mutableCopy];
     [self sendSysex:[@"ba0" stringByAppendingString:[NSString stringWithFormat:@"%2X", (int)(6 * 256 + 127 * (float)(tint + 50) / 100)]]];
     [self sendSysex:[@"ba0" stringByAppendingString:[NSString stringWithFormat:@"%2X", 7 * 256 + (int)(127 * (gradeLift + 1) / 2)]]];
     [self sendSysex:[@"ba0" stringByAppendingString:[NSString stringWithFormat:@"%2X", 8 * 256 + (int)(127 * gradeSat / 2)]]];
+    [self sendSysex:[@"9a0" stringByAppendingString:[NSString stringWithFormat:@"%2X", (int)(8 * 256 + assistEnabled * 127)]]];
+    [self sendSysex:[@"9a0" stringByAppendingString:[NSString stringWithFormat:@"%2X", (int)(9 * 256 + falseEnabled * 127)]]];
+    [self sendSysex:[@"9a0" stringByAppendingString:[NSString stringWithFormat:@"%2X", (int)(10 * 256 + zebraEnabled * 127)]]];
+    [self sendSysex:[@"9a0" stringByAppendingString:[NSString stringWithFormat:@"%2X", (int)(11 * 256 + overlayEnabled * 127)]]];
+    [self sendSysex:[@"9a0" stringByAppendingString:[NSString stringWithFormat:@"%2X", (int)(12 * 256 + lutEnabled * 127)]]];
     [self.focusFieldValue setFloatValue:focus];
     [self.focusSliderValue setFloatValue:focus];
     [self focusUpdate];
@@ -937,6 +942,9 @@ NSMutableString *switcherIP = [@"192.168.1.240" mutableCopy];
     {
         NSLog(@"Failed to send LUT");
     }
+    else {
+        [self sendSysex:[@"9a0" stringByAppendingString:[NSString stringWithFormat:@"%2X", (int)(12 * 256 + lutEnabled * 127)]]];
+    }
 }
 
 - (void) assistUpdate {
@@ -1140,6 +1148,24 @@ NSMutableString *switcherIP = [@"192.168.1.240" mutableCopy];
             gradeSat = memESettings[9];
             [self updateAll];
         }
+        if ([command dataByte1] == 21 && [command dataByte2] == 127) {
+            [self runMacroZero:NULL];
+        }
+        if ([command dataByte1] == 22 && [command dataByte2] == 127) {
+            [self runMacroOne:NULL];
+        }
+        if ([command dataByte1] == 23 && [command dataByte2] == 127) {
+            [self runMacroTwo:NULL];
+        }
+        if ([command dataByte1] == 13 && [command dataByte2] == 127) {
+            [self runMacroThree:NULL];
+        }
+        if ([command dataByte1] == 14 && [command dataByte2] == 127) {
+            [self runMacroFour:NULL];
+        }
+        if ([command dataByte1] == 15 && [command dataByte2] == 127) {
+            [self runMacroFive:NULL];
+        }
     }
     if ([command statusByte] == 138) {
         if ([command dataByte1] == 8 && [command dataByte2] == 0) {
@@ -1161,6 +1187,11 @@ NSMutableString *switcherIP = [@"192.168.1.240" mutableCopy];
             overlayEnabled = not(overlayEnabled);
             [[self overlayEnable] setIntValue:overlayEnabled];
             [self overlayUpdate];
+        }
+        if ([command dataByte1] == 12 && [command dataByte2] == 0) {
+            lutEnabled = not(lutEnabled);
+            [[self lutEnable] setIntValue:lutEnabled];
+            [self lutUpdate];
         }
     }
 }
