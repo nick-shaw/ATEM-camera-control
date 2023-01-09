@@ -17,6 +17,10 @@
 #import <mach/mach.h>
 #import <mach/mach_time.h>
 
+// X-Touch Mini on Antler Mac Studio is 3, 2 on MacBook Pro
+// This needs to be set to the device number of your MIDI controller
+#define DEVICE_NO 3
+
 static const uint8_t kCameraAddress = 1;    // Camera Number 1
 IBMDSwitcher* switcher;
 IBMDSwitcherCameraControl* cameraControl;
@@ -119,8 +123,8 @@ NSMutableString *switcherIP = [@"192.168.1.240" mutableCopy];
             [_memD sendActionOn:NSEventMaskLeftMouseDown];
             [_memE sendActionOn:NSEventMaskLeftMouseDown];
             [NSThread sleepForTimeInterval:0.5];
+            [self setDevice:self.availableDevices[DEVICE_NO]];
             [self updateAll];
-            [self setDevice:self.availableDevices[2]];
         }
     }
 }
@@ -781,6 +785,7 @@ NSMutableString *switcherIP = [@"192.168.1.240" mutableCopy];
     [self.gradeSatField setFloatValue:gradeSat];
     [self.gradeSatSlider setFloatValue:gradeSat];
     [self sendSat];
+    [self sendSysex:[@"ba0" stringByAppendingString:[NSString stringWithFormat:@"%2X", 8 * 256 + (int)(127 * gradeSat / 2)]]];
 }
 
 - (void) sendLift {
